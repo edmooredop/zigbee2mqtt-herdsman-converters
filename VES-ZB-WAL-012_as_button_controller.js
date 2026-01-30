@@ -37,14 +37,14 @@ const vesternet = {
                 let button_action = 'unknown';
                 if (msg.type == 'commandMove' || msg.type == 'commandMoveWithOnOff') {
                     const direction = msg.data.movemode === 1 ? 'down' : 'up';
-                    button_number = direction == 'up' ? (Number(msg.endpoint.ID * 2)) - 1 : (Number(msg.endpoint.ID) * 2)            
+                    button_number = String(direction == 'up' ? (Number(msg.endpoint.ID * 2)) - 1 : (Number(msg.endpoint.ID) * 2))            
                     gs.putValue(msg.endpoint, 'previous_direction', direction);
                     button_action = '_hold';
                 }
                 else if (msg.type == 'commandStop' || msg.type == 'commandStopWithOnOff') {
                     const previous_direction = gs.getValue(msg.endpoint, 'previous_direction')
                     if (previous_direction !== undefined) {
-                        button_number = previous_direction == 'up' ? (Number(msg.endpoint.ID * 2)) - 1 : (Number(msg.endpoint.ID) * 2)
+                        button_number = String(previous_direction == 'up' ? (Number(msg.endpoint.ID * 2)) - 1 : (Number(msg.endpoint.ID) * 2))
                         button_action = '_release';
                     }
                 }
@@ -74,7 +74,7 @@ const definition = {
     model: 'VES-ZB-WAL-012',
     vendor: 'Vesternet',
     description: 'Zigbee wall controller - 8 button',
-    fromZigbee: [vesternet.fz.button_map_level, vesternet.fz.button_map_state, vesternet.fz.battery, fz.ignore_genOta],
+    fromZigbee: [vesternet.fz.button_map_level, vesternet.fz.button_map_state, vesternet.fz.battery],
     exposes: [e.battery(), e.action([
         'button_1_click', 'button_1_hold', 'button_1_release', 'button_2_click', 'button_2_hold', 'button_2_release', 'button_3_click', 'button_3_hold', 'button_3_release', 'button_4_click', 'button_4_hold', 'button_4_release', 'button_5_click', 'button_5_hold', 'button_5_release', 'button_6_click', 'button_6_hold', 'button_6_release', 'button_7_click', 'button_7_hold', 'button_7_release', 'button_8_click', 'button_8_hold', 'button_8_release'])],
     toZigbee: [],
